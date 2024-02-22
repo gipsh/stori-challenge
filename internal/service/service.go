@@ -1,4 +1,4 @@
-package domain
+package service
 
 import (
 	"bytes"
@@ -6,20 +6,23 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/gipsh/stori-challenge/internal/domain"
 	"github.com/gipsh/stori-challenge/internal/mailer"
+	"github.com/gipsh/stori-challenge/internal/repository"
 )
 
 type Service struct {
-	mailer mailer.Mailer
+	mailer     mailer.Mailer
+	repository repository.Repository
 }
 
-func NewDomain(mailer mailer.Mailer) Service {
-	return Service{mailer: mailer}
+func NewService(mailer mailer.Mailer, repo repository.Repository) Service {
+	return Service{mailer: mailer, repository: repo}
 }
 
-func (d *Service) GenerateSummary(txs []Transaction) Summary {
+func (d *Service) GenerateSummary(txs []domain.Transaction) domain.Summary {
 
-	var summary Summary
+	var summary domain.Summary
 	summary.MonthlyTransactions = make(map[string]int)
 	debits := 0
 	credits := 0
@@ -35,6 +38,11 @@ func (d *Service) GenerateSummary(txs []Transaction) Summary {
 		}
 		summary.MonthlyTransactions[time.Month(tx.Month).String()]++
 
+		err := d.repository.CreateTransaction(tx)
+		if err != nil {
+			fmt.Println(err)
+		}
+
 	}
 
 	summary.AverageDebit = summary.AverageDebit / float64(debits)
@@ -43,7 +51,7 @@ func (d *Service) GenerateSummary(txs []Transaction) Summary {
 	return summary
 }
 
-func (d *Service) SendSummary(summary Summary) error {
+func (d *Service) SendSummary(summary domain.Summary) error {
 
 	// apply the template
 	tmpl, err := template.ParseFiles("internal/domain/template/summary.tmpl")
