@@ -31,12 +31,3 @@ func (r *RepositoryImpl) CreateTransaction(transaction domain.Transaction) error
 
 	return nil
 }
-
-// create table
-// CREATE TABLE transactions (
-// 	id INTEGER PRIMARY KEY,
-// 	month INTEGER,
-// 	day INTEGER,
-// 	amount REAL,
-// 	account TEXT
-// );

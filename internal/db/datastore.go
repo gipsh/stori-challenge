@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"os"
 	"sync"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -26,7 +27,7 @@ func Close() {
 }
 
 func initialize() *sql.DB {
-	db, err := sql.Open("sqlite3", "file:stori.db")
+	db, err := sql.Open(os.Getenv("DB_DRIVER"), fmt.Sprintf("file:%s", os.Getenv("SQLITE_FILE")))
 	if err != nil {
 		panic(err)
 	}
@@ -39,7 +40,7 @@ func Migrate(db *sql.DB) error {
 		Dir: "internal/db/migrations",
 	}
 
-	n, err := migrate.Exec(db, "sqlite3", migrations, migrate.Up)
+	n, err := migrate.Exec(db, os.Getenv("DB_DRIVER"), migrations, migrate.Up)
 	if err != nil {
 		return err
 	}
