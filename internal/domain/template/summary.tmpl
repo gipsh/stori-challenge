@@ -1,0 +1,26 @@
+<html>
+<img src="https://scontent.cdninstagram.com/v/t51.2885-19/393387202_351730407238105_1859854475817993771_n.jpg?stp=dst-jpg_s640x640&_nc_ht=scontent.cdninstagram.com&_nc_cat=101&_nc_ohc=ELc4KAPNOzwAX_E3MgS&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfBf7ybNnSTFBX-J2jNOyo926FV_U7640w_5CcvvOyJtyQ&oe=65DBAADF&_nc_sid=10d13b">
+
+<br>
+Hi, this is your account balance: 
+<br>
+
+<div>
+Total balance: {{.TotalBalance}}
+</div>
+
+<div>
+Average Debit: {{.AverageDebit}}
+</div>
+<div>
+Average Credit: {{.AverageCredit}}
+</div>
+
+<ul>
+{{range $k, $v := .MonthlyTransactions}}
+    <li>
+        Number of transactions in {{$k}}: {{$v}}
+    </li>
+{{end}}
+</ul>
+</html>
