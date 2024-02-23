@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	database "github.com/gipsh/stori-challenge/internal/db"
 	"github.com/gipsh/stori-challenge/internal/mailer"
-	"github.com/gipsh/stori-challenge/internal/parser"
+	"github.com/gipsh/stori-challenge/internal/reader"
 	"github.com/gipsh/stori-challenge/internal/repository"
 	"github.com/gipsh/stori-challenge/internal/service"
 	"github.com/joho/godotenv"
@@ -29,16 +28,18 @@ func main() {
 
 	mailer := mailer.NewMailer()
 	repo := repository.NewRepository(db)
-	svc := service.NewService(mailer, repo)
-	parser := parser.NewParser()
+	//fileReader := reader.NewFileReader(reader.S3)
+	fileReader := reader.NewFileReader(reader.Local)
 
-	txs, err := parser.ParseFile("txns.csv")
+	svc := service.NewService(mailer, repo, fileReader)
+
+	txs, err := svc.ProcessFile("txns.csv")
 	if err != nil {
 		panic(err)
 	}
 
 	summary := svc.GenerateSummary(txs)
-	fmt.Println(summary)
+	log.Println(summary)
 
 	err = svc.SendSummary(summary)
 	if err != nil {

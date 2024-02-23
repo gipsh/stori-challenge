@@ -15,14 +15,11 @@ func NewParser() *Parser {
 	return &Parser{}
 }
 
+// ParseTransaction parse a transaction from a string
 // ParseFile process file line by line
-func (p *Parser) ParseFile(filename string) ([]domain.Transaction, error) {
+func (p *Parser) ParseFile(file *os.File) ([]domain.Transaction, error) {
 
 	// Open file
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
 	defer file.Close()
 
 	txs := make([]domain.Transaction, 0)
