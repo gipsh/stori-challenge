@@ -72,7 +72,7 @@ It should be easy to extend the current code to support other engines.
 There is a migration to create the transactions table.
 
 One drawback of using sqlite is that is not suitable for lambdas, as the filesystem 
-can be deleted and you end losing data. 
+can be deleted and you will end losing data. 
 
 ## Config 
 
@@ -95,7 +95,10 @@ The supported variables are:
 `S3_BUCKET`  Bucket name
 
 
+## Test data
 
+I generated a csv with 50 transactions with this [tool](https://www.mockaroo.com/)
+Its located [here](data/50txns.csv)
 
 
 
