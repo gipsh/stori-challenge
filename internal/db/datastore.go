@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"sync"
 
@@ -17,7 +18,6 @@ func Connection() *sql.DB {
 	once.Do(func() {
 		connection = initialize()
 	})
-
 	return connection
 }
 
@@ -43,7 +43,7 @@ func Migrate(db *sql.DB) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Applied ", n, " migrations")
+	log.Println("Applied ", n, " migrations")
 
 	return err
 }

@@ -29,7 +29,6 @@ func main() {
 
 	mailer := mailer.NewMailer()
 	repo := repository.NewRepository(db)
-	//fileReader := reader.NewFileReader(reader.S3)
 	fileReader := reader.NewFileReader(reader.Local)
 
 	svc := service.NewService(mailer, repo, fileReader)
@@ -40,7 +39,6 @@ func main() {
 	}
 
 	summary := svc.GenerateSummary(txs)
-	log.Println(summary)
 
 	err = svc.SendSummary(summary)
 	if err != nil {

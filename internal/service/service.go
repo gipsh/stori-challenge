@@ -2,7 +2,7 @@ package service
 
 import (
 	"bytes"
-	"fmt"
+	"log"
 	"text/template"
 	"time"
 
@@ -61,7 +61,7 @@ func (d *Service) GenerateSummary(txs []domain.Transaction) domain.Summary {
 
 		err := d.repository.CreateTransaction(tx)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 		}
 
 	}

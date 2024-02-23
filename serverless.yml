@@ -17,7 +17,7 @@ provider:
 custom:
   stage: ${opt:stage, env:BRANCH, "main"} 
   bucket: ${self:custom.config.upload_bucket}
-  config: ${file(lambda_config.json)}
+  config: ${file(data/lambda_config.json)}
 
 package:
   exclude:

@@ -2,7 +2,6 @@ package reader
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
@@ -50,14 +49,12 @@ func (s *S3FileReader) ReadFile(filename string) (*os.File, error) {
 		return nil, err
 	}
 
-	fmt.Println("Downloading file from S3", outputFile.Name())
+	log.Println("Downloading file from S3", outputFile.Name())
 
 	localFile, err := s.downloadFile(context.Background(), filename, outputFile)
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println("File downloaded to", localFile)
 
 	return os.Open(localFile)
 }

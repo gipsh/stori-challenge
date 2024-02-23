@@ -1,11 +1,11 @@
 package mailer
 
-import "fmt"
+import "log"
 
 type DummyMailer struct {
 }
 
 func (d *DummyMailer) Send(to, subject, body string) error {
-	fmt.Println("Body:", body)
+	log.Println("Body:", body)
 	return nil
 }
