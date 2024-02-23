@@ -5,11 +5,13 @@ import (
 	"testing"
 
 	"github.com/gipsh/stori-challenge/internal/domain"
+	"github.com/gipsh/stori-challenge/internal/repository/mock"
 )
 
 func TestDomain_GenerateSummary(t *testing.T) {
 
-	d := NewService(nil, nil)
+	repo_mock := &mock.RepositoryMock{}
+	d := NewService(nil, repo_mock, nil)
 
 	txs := []domain.Transaction{
 		{Id: 0, Month: 7, Day: 15, Amount: 60.5, IsDebit: false},

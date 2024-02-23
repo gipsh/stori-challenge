@@ -8,16 +8,36 @@ import (
 
 	"github.com/gipsh/stori-challenge/internal/domain"
 	"github.com/gipsh/stori-challenge/internal/mailer"
+	"github.com/gipsh/stori-challenge/internal/parser"
+	"github.com/gipsh/stori-challenge/internal/reader"
 	"github.com/gipsh/stori-challenge/internal/repository"
 )
 
 type Service struct {
 	mailer     mailer.Mailer
 	repository repository.Repository
+	parser     *parser.Parser
+	reader     reader.FileReader
 }
 
-func NewService(mailer mailer.Mailer, repo repository.Repository) Service {
-	return Service{mailer: mailer, repository: repo}
+func NewService(mailer mailer.Mailer, repo repository.Repository, reader reader.FileReader) Service {
+	return Service{mailer: mailer, repository: repo, parser: parser.NewParser(), reader: reader}
+}
+
+// ProcessFile processes the file and returns a list of transactions
+func (d *Service) ProcessFile(filename string) ([]domain.Transaction, error) {
+
+	file, err := d.reader.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	txs, err := d.parser.ParseFile(file)
+	if err != nil {
+		return nil, err
+	}
+
+	return txs, nil
 }
 
 // GenerateSummary generates a summary of the transactions
