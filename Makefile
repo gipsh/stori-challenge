@@ -10,7 +10,7 @@ build:
 	go build -o stori-challenge cmd/local/main.go
 
 lambda: 
-	GOOS=linux go build -o stori-challenge-lambda cmd/lambda/main.go
+	GOARCH=amd64 GOOS=linux go build -o stori-challenge-lambda cmd/lambda/main.go
 	
 test:
 	go test -v -cover ./...
