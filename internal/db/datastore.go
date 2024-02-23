@@ -14,11 +14,15 @@ import (
 var once sync.Once
 var connection *sql.DB
 
-func Connection() *sql.DB {
+func Connection() (*sql.DB, error) {
+	var err error
 	once.Do(func() {
-		connection = initialize()
+		connection, err = initialize()
+		if err != nil {
+			return
+		}
 	})
-	return connection
+	return connection, err
 }
 
 // Close closes the connection to the database
@@ -26,12 +30,8 @@ func Close() {
 	connection.Close()
 }
 
-func initialize() *sql.DB {
-	db, err := sql.Open(os.Getenv("DB_DRIVER"), fmt.Sprintf("file:%s", os.Getenv("SQLITE_FILE")))
-	if err != nil {
-		panic(err)
-	}
-	return db
+func initialize() (*sql.DB, error) {
+	return sql.Open(os.Getenv("DB_DRIVER"), fmt.Sprintf("file:%s", os.Getenv("SQLITE_FILE")))
 }
 
 func Migrate(db *sql.DB) error {

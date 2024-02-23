@@ -19,7 +19,11 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	db := database.Connection()
+	db, err := database.Connection()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	defer database.Close()
 
 	err = database.Migrate(db)
