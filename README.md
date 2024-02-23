@@ -2,7 +2,6 @@
 
 Read a CSV file, generate the balance and send an email 
 
-
 ## Running local
 
 For running the code locally use docker. 
@@ -23,6 +22,7 @@ docker run -t stori-challenge
 ## Running as lambda 
 
 For the deploy i used [serverless framework](https://www.serverless.com/).
+
 Everytime you upload an image to the bucket it trigers the lambda, the file 
 is processed and the mail is sent 
 

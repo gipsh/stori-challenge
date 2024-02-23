@@ -22,7 +22,9 @@ var (
 	svc service.Service
 )
 
-func init() {
+// lambda entry point
+func main() {
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -40,10 +42,6 @@ func init() {
 	fileReader := reader.NewFileReader(reader.S3)
 	svc = service.NewService(mailer, repo, fileReader)
 
-}
-
-// lambda entry point
-func main() {
 	lambda.Start(handler)
 }
 
@@ -52,7 +50,11 @@ func handler(ctx context.Context, s3Event events.S3Event) {
 
 	for _, record := range s3Event.Records {
 		s3 := record.S3
-		log.Printf("[%s - %s] Bucket = %s, Key = %s \n", record.EventSource, record.EventTime, s3.Bucket.Name, s3.Object.Key)
+		log.Printf("[%s - %s] Bucket = %s, Key = %s \n",
+			record.EventSource,
+			record.EventTime,
+			s3.Bucket.Name,
+			s3.Object.Key)
 
 		// process file
 		txs, err := svc.ProcessFile(s3.Object.Key)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	database "github.com/gipsh/stori-challenge/internal/db"
 	"github.com/gipsh/stori-challenge/internal/mailer"
@@ -33,7 +34,7 @@ func main() {
 
 	svc := service.NewService(mailer, repo, fileReader)
 
-	txs, err := svc.ProcessFile("txns.csv")
+	txs, err := svc.ProcessFile(os.Getenv("PROCESS_FILE"))
 	if err != nil {
 		panic(err)
 	}
