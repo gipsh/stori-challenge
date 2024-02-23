@@ -49,10 +49,10 @@ You should see something like this
 ## Mailer 
 
 For local testing i used [mailtrap.io](https://mailtrap.io/) 
-I implemented an STMP and a Dummy mailer.
+I implemented an SMTP and a Dummy mailer.
 You configure the mailer from env variables or from the `.env` file. 
 The variable called `MAILER_METHOD` defines which implementation to use,
-the valid values are `stmp` or `dummy`.  
+the valid values are `smtp` or `dummy`.  
 The dummy mailer just print the body to standar output. 
 It is possible to create also a SES mailer and use it for lambda deploy.
 
@@ -67,7 +67,7 @@ or s3 bucket indistinctly.
 
 ## Database 
 
-For simplicity i choose [sqlite](https://www.sqlite.org/) as database engine.
+For simplicity i choosed [sqlite](https://www.sqlite.org/) as database engine.
 It should be easy to extend the current code to support other engines. 
 There is a migration to create the transactions table.
 
