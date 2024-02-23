@@ -98,7 +98,7 @@ The supported variables are:
 ## Test data
 
 I generated a csv with 50 and other with 1000 transactions with this [tool](https://www.mockaroo.com/)
-- [50txs](data/50txns.csv) -
+- [50txs](data/50txns.csv)
 - [1000txs](data/1000txns.csv)
 
 
