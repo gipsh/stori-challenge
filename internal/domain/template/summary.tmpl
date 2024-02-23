@@ -1,26 +1,43 @@
 <html>
-<img src="https://scontent.cdninstagram.com/v/t51.2885-19/393387202_351730407238105_1859854475817993771_n.jpg?stp=dst-jpg_s640x640&_nc_ht=scontent.cdninstagram.com&_nc_cat=101&_nc_ohc=ELc4KAPNOzwAX_E3MgS&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfBf7ybNnSTFBX-J2jNOyo926FV_U7640w_5CcvvOyJtyQ&oe=65DBAADF&_nc_sid=10d13b">
-
-<br>
-Hi, this is your account balance: 
-<br>
-
-<div>
-Total balance: {{.TotalBalance}}
-</div>
-
-<div>
-Average Debit: {{.AverageDebit}}
-</div>
-<div>
-Average Credit: {{.AverageCredit}}
-</div>
-
+<div style="text-align: center;">&nbsp;</div>
+<table style="width: 100%; border-collapse: collapse; border-style: hidden;" border="0">
+    <tbody>
+        <tr>
+            <td style="width: 18.5864%;"><img
+                    src="https://play-lh.googleusercontent.com/oXTAgpljdbV5LuAOt1NP9_JafUZe9BNl7pwQ01ndl4blYL4N4IQh4-n456P5l_hc1A=s248-rw"
+                    alt="" width="86" height="86" /></td>
+            <td style="width: 81.4136%;">&nbsp;Hi, here is your account stats</td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<p><strong>Balance</strong>&nbsp;</p>
+<table style="height: 54px; width: 100%; border-collapse: collapse; border-style: hidden;" border="0">
+    <tbody>
+        <tr style="height: 18px;">
+            <td style="width: 22.6004%; height: 18px;">Total Balance</td>
+            <td style="width: 77.3996%; height: 18px;">{{printf "%.2f" .TotalBalance}}</td>
+        </tr>
+        <tr style="height: 18px;">
+            <td style="width: 22.6004%; height: 18px;">Average Credit</td>
+            <td style="width: 77.3996%; height: 18px;">{{printf "%.2f" .AverageCredit}}</td>
+        </tr>
+        <tr style="height: 18px;">
+            <td style="width: 22.6004%; height: 18px;">Average Debit</td>
+            <td style="width: 77.3996%; height: 18px;">{{printf "%.2f" .AverageDebit}}</td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<p><strong>Monthly transactions</strong></p>
 <ul>
-{{range $k, $v := .MonthlyTransactions}}
+    {{range $k, $v := .MonthlyTransactions}}
     <li>
-        Number of transactions in {{$k}}: {{$v}}
+        Number of transactions in {{ToMonth $k}}: {{$v}}
     </li>
-{{end}}
+    {{end}}
 </ul>
+
+<p>&nbsp;</p>
+
 </html>

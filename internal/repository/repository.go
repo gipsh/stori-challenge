@@ -19,8 +19,7 @@ func NewRepository(db *sql.DB) *RepositoryImpl {
 }
 
 func (r *RepositoryImpl) CreateTransaction(transaction domain.Transaction) error {
-	_, err := r.db.Exec("INSERT INTO transactions (id, month, day, amount, account) VALUES (?, ?, ?, ?, ?)",
-		transaction.Id,
+	_, err := r.db.Exec("INSERT INTO transactions ( month, day, amount, account) VALUES ( ?, ?, ?, ?)",
 		transaction.Month,
 		transaction.Day,
 		transaction.Amount,

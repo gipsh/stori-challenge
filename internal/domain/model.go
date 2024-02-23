@@ -5,7 +5,7 @@ type Summary struct {
 	TotalBalance        float64
 	AverageDebit        float64
 	AverageCredit       float64
-	MonthlyTransactions map[string]int
+	MonthlyTransactions map[int]int
 }
 
 type Transaction struct {

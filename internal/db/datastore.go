@@ -31,7 +31,6 @@ func initialize() *sql.DB {
 	if err != nil {
 		panic(err)
 	}
-
 	return db
 }
 

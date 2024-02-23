@@ -24,9 +24,9 @@ func TestDomain_GenerateSummary(t *testing.T) {
 		TotalBalance:  39.74,
 		AverageDebit:  -15.38,
 		AverageCredit: 35.25,
-		MonthlyTransactions: map[string]int{
-			"July":   2,
-			"August": 2,
+		MonthlyTransactions: map[int]int{
+			7: 2,
+			8: 2,
 		},
 	}
 
