@@ -10,15 +10,9 @@ provider:
   runtime: go1.x
   lambdaHashingVersion: 20201221
   region: ${self:custom.config.region}
-#  vpc:
-#    securityGroupIds:
-#      - ${self:custom.config.vpc_security_group}
-#    subnetIds:
-#      - ${self:custom.config.vpc_subnet_1}
-#      - ${self:custom.config.vpc_subnet_2}
   environment:
     REGION: ${self:custom.config.region}
-
+    
 
 custom:
   stage: ${opt:stage, env:BRANCH, "main"} 
@@ -36,6 +30,6 @@ functions:
     handler: stori-challenge-lambda
     events:
       - s3: 
-          bucket: "${self:custom.bucket}"
+          bucket: ${self:custom.config.upload_bucket}
           event: s3:ObjectCreated:*
           existing: true

@@ -6,7 +6,9 @@ Read a CSV file, generate the balance and send an email
 
 For running the code locally use docker. 
 
-First build the image
+First create a `.env` file based on the `example.env` provided 
+
+Then build the image 
 
 ```bash 
 docker build -t stori-challege .
@@ -24,10 +26,9 @@ docker run -t stori-challenge
 For the deploy i used [serverless framework](https://www.serverless.com/).
 
 Everytime you upload an image to the bucket it trigers the lambda, the file 
-is processed and the mail is sent 
+is processed and the mail is sent.
+All the definitions are located at `serverless.yml`
 
-To deploy the lambda first check the `lambda_config.json` and complete the parameters
-based on your account.
 
 First compile the code 
 ```
@@ -40,6 +41,10 @@ Then just deploy it
 serverless deploy 
 ```
 
+You should see something like this
+
+![GitHub Image](/data/serverless-deploy.png)
+
 
 ## Mailer 
 
@@ -50,6 +55,7 @@ It is possible to create also a SES mailer and use it for lambda deploy.
 
 Example of a generated summary mail: 
 
+![example](/data/mailtrap-balance.png)
 
 
 
