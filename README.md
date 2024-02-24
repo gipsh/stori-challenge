@@ -11,7 +11,7 @@ First create a `.env` file based on the `example.env` provided
 Then build the image 
 
 ```bash 
-docker build -t stori-challege .
+docker build -t stori-challenge .
 ```
 
 And the run the image 

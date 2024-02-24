@@ -16,6 +16,7 @@ FROM alpine:3.19
 WORKDIR /app
 COPY --from=builder /app/stori-challenge .
 COPY --from=builder /app/.env .
+COPY --from=builder /app/data/1000txns.csv ./data/1000txns.csv
 COPY --from=builder /app/internal/domain/template/summary.tmpl ./internal/domain/template/summary.tmpl
 COPY --from=builder /app/internal/db/migrations/20240222170759-create-transactions.sql ./internal/db/migrations/20240222170759-create-transactions.sql
 
