@@ -5,13 +5,21 @@ import (
 	"testing"
 
 	"github.com/gipsh/stori-challenge/internal/domain"
-	"github.com/gipsh/stori-challenge/internal/repository/mock"
+	m "github.com/gipsh/stori-challenge/internal/repository/mocks"
+
+	"github.com/golang/mock/gomock"
 )
 
 func TestDomain_GenerateSummary(t *testing.T) {
 
-	repo_mock := &mock.RepositoryMock{}
-	d := NewService(nil, repo_mock, nil)
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	repo := m.NewMockRepository(ctrl)
+
+	repo.EXPECT().CreateTransaction(gomock.Any()).Return(nil).Times(4)
+
+	d := NewService(nil, repo, nil)
 
 	txs := []domain.Transaction{
 		{Id: 0, Month: 7, Day: 15, Amount: 60.5, IsDebit: false},
