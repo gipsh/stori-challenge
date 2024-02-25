@@ -49,12 +49,9 @@ You should see something like this
 ## Mailer 
 
 For local testing i used [mailtrap.io](https://mailtrap.io/) 
-I implemented an SMTP and a Dummy mailer.
+I implemented an SMTP, SES and a Dummy mailer.
 You configure the mailer from env variables or from the `.env` file. 
-The variable called `MAILER_METHOD` defines which implementation to use,
-the valid values are `smtp` or `dummy`.  
-The dummy mailer just print the body to standar output. 
-It is possible to create also a SES mailer and use it for lambda deploy.
+The dummy mailer just print the body to standard output. 
 
 Example of a generated summary mail: 
 
