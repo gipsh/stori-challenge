@@ -35,7 +35,7 @@ First compile the code
 make lambda
 ```
 
-Then just deploy it
+Then just deploy it, make sure you have your AWS enviroment already set
 
 ```
 serverless deploy 
@@ -81,9 +81,9 @@ The supported variables are:
 
 `PROCESS_FILE` defines the name of the csv file to process. 
 
-`MAILER_METHOD` valid values are smtp/dummy
-
 `SMTP_*` smtp config parameters
+
+`FROM_EMAIL` email from value
 
 `DB_DRIVER` currently the only supported is sqlite3
 
