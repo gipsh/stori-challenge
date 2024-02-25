@@ -4,9 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go-v2/config"
 	database "github.com/gipsh/stori-challenge/internal/db"
 	"github.com/gipsh/stori-challenge/internal/mailer"
 	"github.com/gipsh/stori-challenge/internal/reader"
@@ -25,9 +27,17 @@ var (
 // lambda entry point
 func main() {
 
+	ctx := context.Background()
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
+	}
+
+	// init aws config
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(os.Getenv("AWS_REGION")))
+	if err != nil {
+		log.Fatalf("unable to load SDK config, %v", err)
 	}
 
 	db, err = database.Connection()
@@ -40,9 +50,9 @@ func main() {
 		panic(err)
 	}
 
-	mailer := mailer.NewMailer()
+	mailer := mailer.NewSESMailer(cfg, os.Getenv("FROM_EMAIL"))
 	repo := repository.NewRepository(db)
-	fileReader := reader.NewFileReader(reader.S3)
+	fileReader := reader.NewS3FileReader(cfg, os.Getenv("S3_BUCKET"))
 	svc = service.NewService(mailer, repo, fileReader)
 
 	lambda.Start(handler)
@@ -60,17 +70,7 @@ func handler(ctx context.Context, s3Event events.S3Event) {
 			s3.Object.Key)
 
 		// process file
-		txs, err := svc.ProcessFile(s3.Object.Key)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-
-		// generate summary
-		summary := svc.GenerateSummary(txs)
-
-		// send summary
-		err = svc.SendSummary(summary)
+		err := svc.ProcessFile(s3.Object.Key)
 		if err != nil {
 			log.Println(err)
 			continue

@@ -31,20 +31,17 @@ func main() {
 		panic(err)
 	}
 
-	mailer := mailer.NewMailer()
-	repo := repository.NewRepository(db)
-	fileReader := reader.NewFileReader(reader.Local)
+	mailer := mailer.NewSMTPMailer(os.Getenv("SMTP_HOST"),
+		os.Getenv("SMTP_PORT"),
+		os.Getenv("SMTP_USERNAME"),
+		os.Getenv("SMTP_PASSWORD"),
+		os.Getenv("FROM_EMAIL"))
 
+	repo := repository.NewRepository(db)
+	fileReader := reader.NewLocalFileReader()
 	svc := service.NewService(mailer, repo, fileReader)
 
-	txs, err := svc.ProcessFile(os.Getenv("PROCESS_FILE"))
-	if err != nil {
-		panic(err)
-	}
-
-	summary := svc.GenerateSummary(txs)
-
-	err = svc.SendSummary(summary)
+	err = svc.ProcessFile(os.Getenv("PROCESS_FILE"))
 	if err != nil {
 		panic(err)
 	}
