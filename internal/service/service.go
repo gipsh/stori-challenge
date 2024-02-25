@@ -24,8 +24,25 @@ func NewService(mailer mailer.Mailer, repo repository.Repository, reader reader.
 	return Service{mailer: mailer, repository: repo, parser: parser.NewParser(), reader: reader}
 }
 
+func (d *Service) ProcessFile(filename string) error {
+	txs, err := d.ReadData(filename)
+	if err != nil {
+		return err
+	}
+
+	summary := d.GenerateSummary(txs)
+
+	err = d.SendSummary(summary)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
 // ProcessFile processes the file and returns a list of transactions
-func (d *Service) ProcessFile(filename string) ([]domain.Transaction, error) {
+func (d *Service) ReadData(filename string) ([]domain.Transaction, error) {
 
 	file, err := d.reader.ReadFile(filename)
 	if err != nil {

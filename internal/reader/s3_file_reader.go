@@ -5,15 +5,14 @@ import (
 	"log"
 	"os"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/aws/aws-sdk-go/aws"
 )
 
 type S3FileReader struct {
 	client *s3.Client
-	region string
 	bucket string
 }
 
@@ -22,12 +21,10 @@ type S3FileReaderConfig struct {
 	Bucket string
 }
 
-func NewS3FileReader(config S3FileReaderConfig) *S3FileReader {
-	ctx := context.Background()
+func NewS3FileReader(cfg aws.Config, bucket string) *S3FileReader {
 	return &S3FileReader{
-		client: CreateS3Client(ctx, config.Region),
-		region: config.Region,
-		bucket: config.Bucket,
+		client: s3.NewFromConfig(cfg),
+		bucket: bucket,
 	}
 }
 
