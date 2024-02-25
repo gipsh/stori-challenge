@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
@@ -26,16 +25,6 @@ func NewS3FileReader(cfg aws.Config, bucket string) *S3FileReader {
 		client: s3.NewFromConfig(cfg),
 		bucket: bucket,
 	}
-}
-
-func CreateS3Client(ctx context.Context, region string) *s3.Client {
-
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(region))
-	if err != nil {
-		log.Fatalf("unable to load SDK config, %v", err)
-	}
-
-	return s3.NewFromConfig(cfg)
 }
 
 func (s *S3FileReader) ReadFile(filename string) (*os.File, error) {
