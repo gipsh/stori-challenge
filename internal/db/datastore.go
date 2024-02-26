@@ -7,8 +7,8 @@ import (
 	"os"
 	"sync"
 
-	_ "github.com/mattn/go-sqlite3"
 	migrate "github.com/rubenv/sql-migrate"
+	_ "modernc.org/sqlite"
 )
 
 var once sync.Once
@@ -39,7 +39,7 @@ func Migrate(db *sql.DB) error {
 		Dir: "internal/db/migrations",
 	}
 
-	n, err := migrate.Exec(db, os.Getenv("DB_DRIVER"), migrations, migrate.Up)
+	n, err := migrate.Exec(db, "sqlite3", migrations, migrate.Up)
 	if err != nil {
 		return err
 	}
