@@ -86,6 +86,9 @@ func (d *Service) GenerateSummary(txs []domain.Transaction) domain.Summary {
 	summary.AverageDebit = summary.AverageDebit / float64(debits)
 	summary.AverageCredit = summary.AverageCredit / float64(credits)
 
+	log.Println("Processed ", len(txs), " transactions")
+	log.Println("Credits: ", credits, " | Debits: ", debits)
+
 	return summary
 }
 

@@ -2,6 +2,7 @@ package mailer
 
 import (
 	"fmt"
+	"log"
 	"net/smtp"
 )
 
@@ -36,6 +37,7 @@ func (s *SMTPMailer) Send(to, subject, body string) error {
 
 	err := smtp.SendMail(fmt.Sprintf("%s:%s", s.Host, s.Port), auth, s.From, tos, msg)
 
+	log.Println("Email sent to ", to)
 	return err
 
 }
