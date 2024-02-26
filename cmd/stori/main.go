@@ -23,7 +23,6 @@ var (
 	svc service.Service
 )
 
-// lambda entry point
 func main() {
 
 	var db *sql.DB
@@ -40,7 +39,7 @@ func main() {
 	// init aws config
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(os.Getenv("AWS_REGION")))
 	if err != nil {
-		log.Fatalf("unable to load SDK config, %v", err)
+		log.Fatalf("unable to load AWS config, %v", err)
 	}
 
 	// init db
