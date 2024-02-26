@@ -79,6 +79,9 @@ There is a `example.env` file with all the settings
 
 The supported variables are: 
 
+`RUN_LOCAL`  if true the code will run locally, using SMTP and local file system.
+if not set it will run as a lambda using SES and fetching the file from s3 
+
 `PROCESS_FILE` defines the name of the csv file to process. 
 
 `SMTP_*` smtp config parameters
