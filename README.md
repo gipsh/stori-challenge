@@ -2,7 +2,7 @@
 
 Read a CSV file, generate the balance and send an email 
 
-## Running local
+## Running with docker
 
 For running the code locally use docker. 
 
@@ -18,6 +18,22 @@ And the run the image
 
 ```bash 
 docker run -t stori-challenge
+```
+
+## Running locally
+
+You can run the code directly on your machine 
+
+first build the code 
+
+```bash 
+make build
+```
+
+then run it
+
+```bash
+RUN_LOCAL=true ./stori-challenge
 ```
 
 
@@ -80,7 +96,7 @@ There is a `example.env` file with all the settings
 The supported variables are: 
 
 `RUN_LOCAL`  if true the code will run locally, using SMTP and local file system.
-if not set it will run as a lambda using SES and fetching the file from s3 
+If not set it will run as a lambda using SES and fetching the file from s3 
 
 `PROCESS_FILE` defines the name of the csv file to process. 
 
@@ -88,7 +104,7 @@ if not set it will run as a lambda using SES and fetching the file from s3
 
 `FROM_EMAIL` email from value
 
-`DB_DRIVER` currently the only supported is sqlite3
+`DB_DRIVER` currently the only supported is sqlite
 
 `SQLITE_FILE` filename for storing the db
 
