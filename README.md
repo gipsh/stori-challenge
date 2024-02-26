@@ -36,6 +36,17 @@ then run it
 RUN_LOCAL=true ./stori-challenge
 ```
 
+You should see an output like this:
+
+```bash
+➜  ~/workspace/stori-challenge git:(main) ✗ RUN_LOCAL=true ./stori-challenge
+2024/02/26 18:28:26 Applied  1  migrations
+2024/02/26 18:28:26 Processed  1000  transactions
+2024/02/26 18:28:26 Credits:  503  | Debits:  497
+2024/02/26 18:28:28 Email sent to  test@test.com
+➜  ~/workspace/stori-challenge git:(main) ✗ 
+```
+
 
 ## Running as lambda 
 
