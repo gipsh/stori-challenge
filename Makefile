@@ -7,10 +7,10 @@ help:
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
 build:
-	go build -o stori-challenge cmd/local/main.go
+	go build -o stori-challenge cmd/stori/main.go
 
 lambda: 
-	GOARCH=amd64 GOOS=linux go build -o stori-challenge-lambda cmd/lambda/main.go
+	GOARCH=amd64 GOOS=linux go build -o stori-challenge cmd/stori/main.go
 	
 test:
 	go test -v -cover ./...

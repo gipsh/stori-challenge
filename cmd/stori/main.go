@@ -20,19 +20,22 @@ import (
 )
 
 var (
-	db  *sql.DB
 	svc service.Service
 )
 
 // lambda entry point
 func main() {
 
+	var db *sql.DB
 	ctx := context.Background()
 
+	// load env variables
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	localMode := os.Getenv("RUN_LOCAL") == "true"
 
 	// init aws config
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(os.Getenv("AWS_REGION")))
@@ -40,22 +43,45 @@ func main() {
 		log.Fatalf("unable to load SDK config, %v", err)
 	}
 
+	// init db
 	db, err = database.Connection()
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// migrate db
 	err = database.Migrate(db)
 	if err != nil {
 		panic(err)
 	}
 
-	mailer := mailer.NewSESMailer(cfg, os.Getenv("FROM_EMAIL"))
 	repo := repository.NewRepository(db)
-	fileReader := reader.NewS3FileReader(cfg, os.Getenv("S3_BUCKET"))
-	svc = service.NewService(mailer, repo, fileReader)
 
-	lambda.Start(handler)
+	var fileReader reader.FileReader
+	var mail mailer.Mailer
+	if localMode {
+		fileReader = reader.NewLocalFileReader()
+		mail = mailer.NewSMTPMailer(os.Getenv("SMTP_HOST"),
+			os.Getenv("SMTP_PORT"),
+			os.Getenv("SMTP_USERNAME"),
+			os.Getenv("SMTP_PASSWORD"),
+			os.Getenv("FROM_EMAIL"))
+
+	} else {
+		fileReader = reader.NewS3FileReader(cfg, os.Getenv("S3_BUCKET"))
+		mail = mailer.NewSESMailer(cfg, os.Getenv("FROM_EMAIL"))
+	}
+
+	svc = service.NewService(mail, repo, fileReader)
+
+	if localMode {
+		err = svc.ProcessFile(os.Getenv("PROCESS_FILE"))
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		lambda.Start(handler)
+	}
 }
 
 // trigger by s3 event
