@@ -12,6 +12,7 @@ provider:
   region: ${self:custom.config.region}
   environment:
     REGION: ${self:custom.config.region}
+    SQLITE_FILE: /tmp/stori.db
     
 
 custom:
@@ -27,7 +28,7 @@ package:
 
 functions:
   upload-processor:
-    handler: stori-challenge-lambda
+    handler: stori-challenge
     events:
       - s3: 
           bucket: ${self:custom.config.upload_bucket}
