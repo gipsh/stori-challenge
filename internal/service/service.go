@@ -32,6 +32,10 @@ func (d *Service) ProcessFile(filename string) error {
 
 	summary := d.GenerateSummary(txs)
 
+	log.Println("Processed ", len(txs), " transactions")
+	log.Println("Total Balance: ", summary.TotalBalance)
+	log.Printf("Avg Credits: %.2f | Avg Debits:  %.2f\n", summary.AverageCredit, summary.AverageDebit)
+
 	err = d.SendSummary(summary)
 	if err != nil {
 		return err
@@ -85,9 +89,6 @@ func (d *Service) GenerateSummary(txs []domain.Transaction) domain.Summary {
 
 	summary.AverageDebit = summary.AverageDebit / float64(debits)
 	summary.AverageCredit = summary.AverageCredit / float64(credits)
-
-	log.Println("Processed ", len(txs), " transactions")
-	log.Println("Credits: ", credits, " | Debits: ", debits)
 
 	return summary
 }

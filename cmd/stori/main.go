@@ -36,12 +36,6 @@ func main() {
 
 	localMode := os.Getenv("RUN_LOCAL") == "true"
 
-	// init aws config
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(os.Getenv("AWS_REGION")))
-	if err != nil {
-		log.Fatalf("unable to load AWS config, %v", err)
-	}
-
 	// init db
 	db, err = database.Connection()
 	if err != nil {
@@ -67,6 +61,12 @@ func main() {
 			os.Getenv("FROM_EMAIL"))
 
 	} else {
+		// init aws config
+		cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(os.Getenv("AWS_REGION")))
+		if err != nil {
+			log.Fatalf("unable to load AWS config, %v", err)
+		}
+
 		fileReader = reader.NewS3FileReader(cfg, os.Getenv("S3_BUCKET"))
 		mail = mailer.NewSESMailer(cfg, os.Getenv("FROM_EMAIL"))
 	}
@@ -76,7 +76,7 @@ func main() {
 	if localMode {
 		err = svc.ProcessFile(os.Getenv("PROCESS_FILE"))
 		if err != nil {
-			panic(err)
+			log.Fatalf("unable to process file, %v", err)
 		}
 	} else {
 		lambda.Start(handler)
